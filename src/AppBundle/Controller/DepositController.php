@@ -8,7 +8,10 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Deposit;
+use AppBundle\Entity\Account;
+
+use AppBundle\Entity\Transaction;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\BrowserKit\Request;
@@ -35,15 +38,36 @@ class DepositController extends Controller
         $amount = $data['amount'];
         $mobile=$data['mobile'];
 
-        $deposit = new Deposit($amount);
-
         $em = $this->getDoctrine()->getManager();
+        $account = $em->getRepository('AppBundle:Account')->findOneBy(["accountNo"=>$accountNo]);
 
-        // tells Doctrine you want to (eventually) save the Product (no queries yet)
-        $em->persist($deposit);
+        //start atomic transaction
+        $em->getConnection()->beginTransaction(); // suspend auto-commit
+        try {
+            if(is_null($account)){
+                $account = new Account();
+                $account->setAccountNo($accountNo);
 
-        // actually executes the queries (i.e. the INSERT query)
-        $em->flush();
+
+            }
+            $deposit = new Transaction($amount);
+            $deposit->setAccount($account);
+            //deposit amount to user's account
+            $account->deposit($amount);
+
+            $em->persist($account);
+            // tells Doctrine you want to (eventually) save the Product (no queries yet)
+            $em->persist($deposit);
+
+            // actually executes the queries (i.e. the INSERT query)
+            $em->flush();
+            $em->getConnection()->commit();
+        } catch (Exception $e) {
+            //if failed rollback
+            $em->getConnection()->rollBack();
+            throw $e;
+        }
+
 
         $response = array(
             'success' => true,

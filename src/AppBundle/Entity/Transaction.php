@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Deposit
  *
- * @ORM\Table(name="deposit")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\DepositRepository")
+ * @ORM\Table(name="transaction")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\TransactionRepository")
  */
-class Deposit
+class Transaction
 {
     /**
      * @var int
@@ -21,24 +21,33 @@ class Deposit
      */
     private $id;
 
+    // ...
+    /**
+     * @var Account
+     * @ORM\ManyToOne(targetEntity="account", inversedBy="transactions")
+     * @ORM\JoinColumn(name="account_id", referencedColumnName="id")
+     */
+    private $account;
+
+
     /**
      * @var string
      *
-     * @ORM\Column(name="Amount", type="decimal", precision=10, scale=0)
+     * @ORM\Column(name="amount", type="decimal", precision=10, scale=0)
      */
     private $amount;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="RefNo", type="string", length=255)
+     * @ORM\Column(name="refNo", type="string", length=255)
      */
     private $refNo;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="CreatedAt", type="datetime")
+     * @ORM\Column(name="createdAt", type="datetime")
      */
     private $createdAt;
 
@@ -59,13 +68,27 @@ class Deposit
     {
         return $this->id;
     }
+    /**
+     * @return mixed
+     */
+    public function getAccount()
+    {
+        return $this->account;
+    }
 
+    /**
+     * @param mixed $account
+     */
+    public function setAccount($account)
+    {
+        $this->account = $account;
+    }
     /**
      * Set amount
      *
      * @param string $amount
      *
-     * @return Deposit
+     * @return Transaction
      */
     public function setAmount($amount)
     {
@@ -89,7 +112,7 @@ class Deposit
      *
      * @param string $refNo
      *
-     * @return Deposit
+     * @return Transaction
      */
     public function setRefNo($refNo)
     {
@@ -113,7 +136,7 @@ class Deposit
      *
      * @param \DateTime $createdAt
      *
-     * @return Deposit
+     * @return Transaction
      */
     public function setCreatedAt($createdAt)
     {
