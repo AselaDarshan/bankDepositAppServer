@@ -26,13 +26,13 @@ class User extends BaseUser
     /**
      * @var string
      *
-     * @ORM\Column(name="deviceId", type="string", length=255)
+     * @ORM\Column(name="deviceId", type="string", length=255,nullable=true)
      */
     private $deviceId;
     /**
      * @var string
      *
-     * @ORM\Column(name="mobile", type="string", length=255)
+     * @ORM\Column(name="mobile", type="string", length=255,nullable=true)
      */
     private $mobile;
 

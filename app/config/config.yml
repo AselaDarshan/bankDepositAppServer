@@ -70,3 +70,46 @@ fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: AppBundle\Entity\User
+easy_admin:
+    site_name: 'Amãna Bank'
+    design:
+            brand_color: '#0b4029'
+    entities:
+        User:
+            class: AppBundle\Entity\User
+            label: 'Users'
+            list:
+                title: 'Users'
+                actions:
+
+                    - { name: 'edit', label: '', icon: 'edit' }
+                    - { name: 'delete', label: '', icon: 'trash' }
+                fields:
+                    - id
+                    - username
+                    - account
+                    - mobile
+                    - deviceId
+        Account:
+            class: AppBundle\Entity\Account
+            label: 'Accounts'
+            list:
+                title: 'Accounts'
+                fields:
+                    - id
+                    - accountNo
+                    - balance
+                    - transactions
+        Transaction:
+            class: AppBundle\Entity\Transaction
+            label: 'Transaction'
+            list:
+                title: 'Transactions'
+                fields:
+                    - id
+                    - amount
+                    - account
+                    - createdAt
+                    - refNo
+
+
