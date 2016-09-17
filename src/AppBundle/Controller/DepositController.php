@@ -29,7 +29,8 @@ class DepositController extends Controller
         $request =  $this->container->get('request_stack')->getCurrentRequest();
         $logger->debug($request);
 
-        $requestData =$request->request->get('Data');
+        $username = $request->request->get('user');
+        $requestData =$request->request->get('data');
 
         $data = json_decode($requestData, true);
 
@@ -39,39 +40,56 @@ class DepositController extends Controller
         $mobile=$data['mobile'];
 
         $em = $this->getDoctrine()->getManager();
-        $account = $em->getRepository('AppBundle:Account')->findOneBy(["accountNo"=>$accountNo]);
+        $user = $em->getRepository('AppBundle:User')->findOneBy(["username"=>$username]);
+        if(!is_null($user)) {
 
-        //start atomic transaction
-        $em->getConnection()->beginTransaction(); // suspend auto-commit
-        try {
-            if(is_null($account)){
-                $account = new Account();
-                $account->setAccountNo($accountNo);
+            $operatorAccount = $user->getAccount();
+
+            $account = $em->getRepository('AppBundle:Account')->findOneBy(["accountNo" => $accountNo]);
+
+            //start atomic transaction
+            $em->getConnection()->beginTransaction(); // suspend auto-commit
+            try {
+                if (is_null($account)) {
+                    $account = new Account();
+                    $account->setAccountNo($accountNo);
 
 
+                }
+
+                //withdraw from operator's account
+                $withdraw = new Transaction(($amount*-1));
+                $withdraw->setAccount($operatorAccount);
+                $operatorAccount->withdraw($amount);
+                //deposit amount to user's account
+                $deposit = new Transaction($amount);
+                $deposit->setAccount($account);
+                $account->deposit($amount);
+
+                $em->persist($account);
+                // tells Doctrine you want to (eventually) save the Product (no queries yet)
+                $em->persist($deposit);
+                $em->persist($withdraw);
+
+                // actually executes the queries (i.e. the INSERT query)
+                $em->flush();
+                $em->getConnection()->commit();
+            } catch (Exception $e) {
+                //if failed rollback
+                $em->getConnection()->rollBack();
+                throw $e;
             }
-            $deposit = new Transaction($amount);
-            $deposit->setAccount($account);
-            //deposit amount to user's account
-            $account->deposit($amount);
 
-            $em->persist($account);
-            // tells Doctrine you want to (eventually) save the Product (no queries yet)
-            $em->persist($deposit);
 
-            // actually executes the queries (i.e. the INSERT query)
-            $em->flush();
-            $em->getConnection()->commit();
-        } catch (Exception $e) {
-            //if failed rollback
-            $em->getConnection()->rollBack();
-            throw $e;
+            $response = array(
+                'success' => true,
+                'ref_no' => $deposit->getRefNo()
+            );
+
+            return new JsonResponse($response);
         }
-
-
         $response = array(
-            'success' => true,
-            'ref_no' =>$deposit->getRefNo()
+            'success' => false,
         );
 
         return new JsonResponse($response);

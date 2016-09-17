@@ -55,7 +55,7 @@ class Transaction
     public function __construct($amount)
     {
         $this->amount = $amount;
-        $this->refNo = md5(uniqid(rand(), true));
+        $this->refNo = (new \DateTime())->getTimestamp()%100000000;
         $this->createdAt = new \DateTime();
 
     }
