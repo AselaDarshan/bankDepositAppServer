@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-class AppRegistrationController extends Controller
+class AppLoginController extends Controller
 {
     /**
      * @Route("/loginApp", name="login_app")
@@ -31,7 +31,30 @@ class AppRegistrationController extends Controller
 
         $data = json_decode($requestData, true);
 
-        $username = $data['name'];
+        $username = $data['username'];
         $password = $data['password'];
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:User')->findOneBy(["username"=>$username]);
+        if(!is_null($user)){
+            if($user->getPassword()==$password) {
+                $success = true;
+            }
+            else{
+//                ToDo:check password
+                $success=true;
+            }
+
+        }
+        else{
+
+            $success=false;
+
+        }
+
+        $response = array(
+            'success' => $success
+        );
+        return new JsonResponse($response);
     }
 }
