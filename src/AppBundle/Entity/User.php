@@ -23,6 +23,50 @@ class User extends BaseUser
      * @ORM\JoinColumn(name="account_id", referencedColumnName="id")
      */
     private $account;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="deviceId", type="string", length=255)
+     */
+    private $deviceId;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mobile", type="string", length=255)
+     */
+    private $mobile;
+
+    /**
+     * @return string
+     */
+    public function getMobile()
+    {
+        return $this->mobile;
+    }
+
+    /**
+     * @param string $mobile
+     */
+    public function setMobile($mobile)
+    {
+        $this->mobile = $mobile;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDeviceId()
+    {
+        return $this->deviceId;
+    }
+
+    /**
+     * @param string $deviceId
+     */
+    public function setDeviceId($deviceId)
+    {
+        $this->deviceId = $deviceId;
+    }
 
     /**
      * @return mixed

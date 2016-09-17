@@ -34,6 +34,9 @@ class AppRegistrationController extends Controller
         $username = $data['name'];
         $accountNo = $data['account_no'];
         $email = $data['email'];
+        $mobile = $data['mobile'];
+        $deviceId=$data['deviceId'];
+        $password=$data['password'];
         //create Account
         $account = new Account();
         $account->setAccountNo($accountNo);
@@ -41,8 +44,10 @@ class AppRegistrationController extends Controller
         $user = new User();
         $user->setUsername($username);
         $user->setEmail($email);
-        $user->setPassword("1234");
+        $user->setPassword($password);
         $user->setAccount($account);
+        $user->setDeviceId($deviceId);
+        $user->setMobile($mobile);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($account);
