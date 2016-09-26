@@ -28,25 +28,6 @@ class Account
      */
     private $transactions;
 
-    public function __toString(){
-        return (string) $this->getId();
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getTransactions()
-    {
-        return $this->transactions;
-    }
-
-    /**
-     * @param ArrayCollection $transactions
-     */
-    public function setTransactions($transactions)
-    {
-        $this->transactions = $transactions;
-    }
     /**
      * @var string
      *
@@ -80,6 +61,26 @@ class Account
     public function getId()
     {
         return $this->id;
+    }
+
+    public function __toString(){
+        return (string) $this->getAccountNo();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getTransactions()
+    {
+        return $this->transactions;
+    }
+
+    /**
+     * @param ArrayCollection $transactions
+     */
+    public function setTransactions($transactions)
+    {
+        $this->transactions = $transactions;
     }
 
     /**

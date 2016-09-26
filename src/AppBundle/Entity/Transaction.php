@@ -52,7 +52,7 @@ class Transaction
     private $createdAt;
 
 
-    public function __construct($amount)
+    public function __construct($amount = 0)
     {
         $this->amount = $amount;
         $this->refNo = (new \DateTime())->getTimestamp()%100000000;
@@ -153,6 +153,10 @@ class Transaction
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    public function getAccountHolder(){
+        $this->account->getAccountHolderName();
     }
 }
 

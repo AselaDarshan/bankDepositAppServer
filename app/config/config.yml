@@ -109,6 +109,7 @@ easy_admin:
                     - id
                     - amount
                     - account
+                    - accountHolder
                     - createdAt
                     - refNo
 
