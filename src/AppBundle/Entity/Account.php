@@ -28,6 +28,10 @@ class Account
      */
     private $transactions;
 
+    public function __toString(){
+        return (string) $this->getId();
+    }
+
     /**
      * @return ArrayCollection
      */
@@ -174,10 +178,6 @@ class Account
         $this->balance -= $withdrawAmount;
 
         return $this;
-    }
-    public function __toString()
-    {
-        return strval($this->id);
     }
 }
 
