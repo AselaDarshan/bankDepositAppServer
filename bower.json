@@ -1,0 +1,23 @@
+{
+  "name": "edulink-elearining",
+  "homepage": "https://github.com/buddhikajay/edulinkELearining",
+  "authors": [
+    "buddhikajay <buddhika.12@cse.mrt.ac.lk>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "web/assets/vendor/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "moment": "momentjs#^2.14.1",
+    "fullcalendar": "^2.9.1"
+  }
+}
