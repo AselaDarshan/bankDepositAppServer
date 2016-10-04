@@ -103,9 +103,9 @@ easy_admin:
                     - transactions
         Transaction:
             class: AppBundle\Entity\Transaction
-            label: 'Transaction'
+            label: 'Cash Deposits'
             list:
-                title: 'Transactions'
+                title: 'Cash Deposits'
                 fields:
                     - id
                     - amount
@@ -113,5 +113,18 @@ easy_admin:
                     - createdBy
                     - createdAt
                     - refNo
+        Cheque:
+            class: AppBundle\Entity\Cheque
+            label: 'Cheque Deposits'
+            list:
+                title: 'Cheque Deposits'
+                fields:
+                    - id
+                    - amount
+                    - account
+                    - collector
+                    - createdAt
+                    - refNo
+
 
 
