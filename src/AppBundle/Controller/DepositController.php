@@ -53,8 +53,6 @@ class DepositController extends Controller
                 if (is_null($account)) {
                     $account = new Account();
                     $account->setAccountNo($accountNo);
-
-
                 }
 
                 //withdraw from operator's account
@@ -64,6 +62,7 @@ class DepositController extends Controller
                 //deposit amount to user's account
                 $deposit = new Transaction($amount);
                 $deposit->setAccount($account);
+                $deposit->setCreatedBy($user->getUsername());
                 $account->deposit($amount);
 
                 $em->persist($account);

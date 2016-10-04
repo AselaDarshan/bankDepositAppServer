@@ -29,21 +29,6 @@ class Account
     private $transactions;
 
     /**
-     * @return ArrayCollection
-     */
-    public function getTransactions()
-    {
-        return $this->transactions;
-    }
-
-    /**
-     * @param ArrayCollection $transactions
-     */
-    public function setTransactions($transactions)
-    {
-        $this->transactions = $transactions;
-    }
-    /**
      * @var string
      *
      * @ORM\Column(name="accountNo", type="string", length=255, unique=true)
@@ -76,6 +61,26 @@ class Account
     public function getId()
     {
         return $this->id;
+    }
+
+    public function __toString(){
+        return (string) $this->getAccountNo();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getTransactions()
+    {
+        return $this->transactions;
+    }
+
+    /**
+     * @param ArrayCollection $transactions
+     */
+    public function setTransactions($transactions)
+    {
+        $this->transactions = $transactions;
     }
 
     /**
@@ -174,10 +179,6 @@ class Account
         $this->balance -= $withdrawAmount;
 
         return $this;
-    }
-    public function __toString()
-    {
-        return strval($this->id);
     }
 }
 

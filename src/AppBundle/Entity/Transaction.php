@@ -45,6 +45,12 @@ class Transaction
     private $refNo;
 
     /**
+     * @var string
+     * @ORM\Column(name="created_by", type="string", length=255)
+     */
+    private $createdBy;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="createdAt", type="datetime")
@@ -52,7 +58,7 @@ class Transaction
     private $createdAt;
 
 
-    public function __construct($amount)
+    public function __construct($amount = 0)
     {
         $this->amount = $amount;
         $this->refNo = (new \DateTime())->getTimestamp()%100000000;
@@ -154,5 +160,32 @@ class Transaction
     {
         return $this->createdAt;
     }
-}
 
+    public function getAccountHolder(){
+        $this->account->getAccountHolderName();
+    }
+
+    /**
+     * Set createdBy
+     *
+     * @param string $createdBy
+     *
+     * @return Transaction
+     */
+    public function setCreatedBy($createdBy)
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    /**
+     * Get createdBy
+     *
+     * @return string
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+}
