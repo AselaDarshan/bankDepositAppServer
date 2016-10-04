@@ -112,5 +112,18 @@ easy_admin:
                     - createdBy
                     - createdAt
                     - refNo
+        Cheque:
+            class: AppBundle\Entity\Cheque
+            label: 'Cheque'
+            list:
+                title: 'Cheques'
+                fields:
+                    - id
+                    - amount
+                    - account
+                    - collector
+                    - createdAt
+                    - refNo
+
 
 
