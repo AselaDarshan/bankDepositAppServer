@@ -66,7 +66,7 @@ class ChequeController extends Controller
                             $cheque = new Cheque($eachCheque['amount']);
                             $cheque->setChequeNo($eachCheque['check_no']);
                             $cheque->setChequeTransaction($chequeTransaction);
-                            $chequeTransaction->addCheque($cheque);
+
                             $em->persist($cheque);
                         }
 

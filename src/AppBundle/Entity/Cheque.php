@@ -13,12 +13,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Cheque
 {
 
-
     /**
-     * Many Features have One Product.
-     * @ORM\ManyToOne(targetEntity="ChequeTransaction", inversedBy="cheques", cascade={"persist"})
+     * Many Cheques have One Transaction.
+     * @ORM\ManyToOne(targetEntity="ChequeTransaction")
      * @ORM\JoinColumn(name="transaction_id", referencedColumnName="id")
      */
+
+
     private $chequeTransaction;
 
     /**
@@ -113,6 +114,8 @@ class Cheque
     {
         return $this->amount;
     }
+
+
 
     /**
      * Set chequeTransaction

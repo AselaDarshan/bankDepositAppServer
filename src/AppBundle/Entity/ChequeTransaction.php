@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,52 +12,22 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ChequeTransaction extends Transaction
 {
-
     /**
-     * @ORM\OneToMany(targetEntity="Cheque", mappedBy="chequeTransaction")
+     * @var int
      *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $cheques;
-
-
-    public function __construct() {
-        parent::__construct();
-        $this->cheques = new ArrayCollection();
-
-    }
-
-
+    private $id;
     /**
-     * Add cheque
+     * Get id
      *
-     * @param \AppBundle\Entity\Cheque $cheque
-     *
-     * @return ChequeTransaction
+     * @return int
      */
-    public function addCheque(\AppBundle\Entity\Cheque $cheque)
+    public function getId()
     {
-        $this->cheques[] = $cheque;
-
-        return $this;
+        return $this->id;
     }
 
-    /**
-     * Remove cheque
-     *
-     * @param \AppBundle\Entity\Cheque $cheque
-     */
-    public function removeCheque(\AppBundle\Entity\Cheque $cheque)
-    {
-        $this->cheques->removeElement($cheque);
-    }
-
-    /**
-     * Get cheques
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCheques()
-    {
-        return $this->cheques;
-    }
 }
