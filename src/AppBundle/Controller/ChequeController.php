@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Account;
 
 use AppBundle\Entity\Cheque;
+use AppBundle\Entity\ChequeTransaction;
 use AppBundle\Entity\Transaction;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -26,8 +27,9 @@ class ChequeController extends Controller
     public function chequeDepositAction()
     {
         $logger = $this->get('logger');
-
+        $responses = Array();
         $request =  $this->container->get('request_stack')->getCurrentRequest();
+        $logger->debug("In ChequeController");
         $logger->debug($request);
 
         $username = $request->request->get('user');
@@ -36,56 +38,67 @@ class ChequeController extends Controller
         $data = json_decode($requestData, true);
 
 
-        $accountNo = $data['account_no'];
-        $amount = $data['amount'];
-        $mobile=$data['mobile'];
 
-        $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('AppBundle:User')->findOneBy(["username"=>$username]);
-        if(!is_null($user)) {
+            $accountNo = $data['check_initial']['account_no'];
+            //$amount = $data[0]['amount'];
+            $mobile = $data['check_initial']['mobile'];
 
-            $operatorAccount = $user->getAccount();
+            $em = $this->getDoctrine()->getManager();
+            $user = $em->getRepository('AppBundle:User')->findOneBy(["username" => $username]);
+            if (!is_null($user)) {
 
-            $account = $em->getRepository('AppBundle:Account')->findOneBy(["accountNo" => $accountNo]);
+                $operatorAccount = $user->getAccount();
 
-            //start atomic transaction
-            $em->getConnection()->beginTransaction(); // suspend auto-commit
-            try {
-                if (is_null($account)) {
-                    $account = new Account();
-                    $account->setAccountNo($accountNo);
-                }
+                $account = $em->getRepository('AppBundle:Account')->findOneBy(["accountNo" => $accountNo]);
+                    //start atomic transaction
+                    $em->getConnection()->beginTransaction(); // suspend auto-commit
+                    try {
+                        if (is_null($account)) {
+                            $account = new Account();
+                            $account->setAccountNo($accountNo);
+                        }
+                        $chequeTransaction = new ChequeTransaction();
+                        $chequeTransaction->setAccount($account);
+                        $chequeTransaction->setCollector($user);
+                        $chequeTransaction->setMobile($mobile);
 
-                //deposit amount to user's account
-                $cheque = new Cheque($amount);
-                $cheque->setAccount($account);
-                $cheque->setCollector($user);
+                        foreach($data['checks'] as $eachCheque){
+                            $cheque = new Cheque($eachCheque['amount']);
+                            $cheque->setChequeNo($eachCheque['check_no']);
+                            $chequeTransaction->addCheque($cheque);
+                        }
 
-                $em->persist($account);
-                // tells Doctrine you want to (eventually) save the Product (no queries yet)
-                $em->persist($cheque);
+                        $em->persist($account);
+                        // tells Doctrine you want to (eventually) save the Product (no queries yet)
+                        $em->persist($cheque);
+                        $em->persist($chequeTransaction);
 
-                // actually executes the queries (i.e. the INSERT query)
-                $em->flush();
-                $em->getConnection()->commit();
-            } catch (Exception $e) {
-                //if failed rollback
-                $em->getConnection()->rollBack();
-                throw $e;
+                        // actually executes the queries (i.e. the INSERT query)
+                        $em->flush();
+                        $em->getConnection()->commit();
+                        $logger->debug("cheque transaction successful");
+                    } catch (Exception $e) {
+                        //if failed rollback
+                        $logger->debug("Exception when inserting cheque transaction");
+                        $em->getConnection()->rollBack();
+                        throw $e;
+                    }
+
+                    $response = array(
+                        'success' => true,
+
+                    );
+
+
+
+                return new JsonResponse($response);
             }
-
-
             $response = array(
-                'success' => true,
-                'ref_no' => $cheque->getRefNo()
+                'success' => false,
             );
 
-            return new JsonResponse($response);
-        }
-        $response = array(
-            'success' => false,
-        );
-
         return new JsonResponse($response);
+
+
     }
 }

@@ -56,14 +56,14 @@ class DepositController extends Controller
                 }
 
                 //withdraw from operator's account
-                $withdraw = new Transaction(($amount*-1));
+                $withdraw = new CashTransaction(($amount*-1));
                 $withdraw->setAccount($operatorAccount);
                 $operatorAccount->withdraw($amount);
-                $withdraw->setCreatedBy($user->getUsername());
+                $withdraw->setCollector($user);
                 //deposit amount to user's account
-                $deposit = new Transaction($amount);
+                $deposit = new CashTransaction($amount);
                 $deposit->setAccount($account);
-                $deposit->setCreatedBy($user->getUsername());
+                $deposit->setCollector($user);
                 $account->deposit($amount);
 
                 $em->persist($account);

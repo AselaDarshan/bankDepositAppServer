@@ -12,6 +12,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Cheque
 {
+
+
+    /**
+     * Many Features have One Product.
+     * @ORM\ManyToOne(targetEntity="ChequeTransaction", inversedBy="cheques")
+     * @ORM\JoinColumn(name="transaction_id", referencedColumnName="id")
+     */
+    private $chequeTransaction;
+
     /**
      * @var int
      *
@@ -24,41 +33,19 @@ class Cheque
     /**
      * @var string
      *
-     * @ORM\Column(name="amount", type="decimal", precision=10, scale=0)
+     * @ORM\Column(name="chequeNo", type="string", length=255)
      */
-    private $amount;
-
-
-    /**
-     * @var Account
-     * @ORM\ManyToOne(targetEntity="account")
-     * @ORM\JoinColumn(name="account_id", referencedColumnName="id")
-     *
-     */
-    private $account;
-
-    /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="user")
-     * @ORM\JoinColumn(name="collector_id", referencedColumnName="id")
-     */
-    private $collector;
+    private $chequeNo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="refNo", type="string", length=255, nullable=true)
+     * @ORM\Column(name="Amount", type="decimal")
      */
-    private $refNo;
+    private $amount;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="createdAt", type="datetime")
-     */
-    private $createdAt;
 
-    public function __construct($amount = 0)
+    public function __construct($amount = 0.0)
     {
         $this->amount = $amount;
         $this->refNo = (new \DateTime())->getTimestamp()%100000000;
@@ -77,53 +64,8 @@ class Cheque
         return $this->id;
     }
 
-    /**
-     * Set refNo
-     *
-     * @param string $refNo
-     *
-     * @return Cheque
-     */
-    public function setRefNo($refNo)
-    {
-        $this->refNo = $refNo;
 
-        return $this;
-    }
 
-    /**
-     * Get refNo
-     *
-     * @return string
-     */
-    public function getRefNo()
-    {
-        return $this->refNo;
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Cheque
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
 
     /**
      * Set amount
@@ -148,52 +90,45 @@ class Cheque
     {
         return $this->amount;
     }
-
     /**
-     * Set account
+     * Set chequeNo
      *
-     * @param \AppBundle\Entity\account $account
+     * @param string $chequeNo
      *
-     * @return Cheque
+     * @return Transaction
      */
-    public function setAccount(\AppBundle\Entity\account $account = null)
+    public function setChequeNo($chequeNo)
     {
-        $this->account = $account;
+        $this->chequeNo = $chequeNo;
 
         return $this;
     }
 
     /**
-     * Get account
+     * Get chequeNo
      *
-     * @return \AppBundle\Entity\account
+     * @return string
      */
-    public function getAccount()
+    public function getChequeNo()
     {
-        return $this->account;
+
+
+        return $this->chequeNo;
+    }
+    /**
+     * @return mixed
+     */
+    public function getChequeTransaction()
+    {
+        return $this->chequeTransaction;
     }
 
     /**
-     * Set collector
-     *
-     * @param \AppBundle\Entity\user $collector
-     *
-     * @return Cheque
+     * @param mixed $chequeTrasaction
      */
-    public function setCollector(\AppBundle\Entity\user $collector = null)
+    public function setCheque($chequeTrasaction)
     {
-        $this->collector = $collector;
-
-        return $this;
+        $this->cheque = $chequeTrasaction;
     }
 
-    /**
-     * Get collector
-     *
-     * @return \AppBundle\Entity\user
-     */
-    public function getCollector()
-    {
-        return $this->collector;
     }
-}

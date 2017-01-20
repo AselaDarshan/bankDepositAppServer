@@ -9,6 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="transaction")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TransactionRepository")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"transaction"="Transaction","chequeTransaction" = "ChequeTransaction","cashTransaction" = "CashTransaction"})
  */
 class Transaction
 {
@@ -30,12 +33,6 @@ class Transaction
     private $account;
 
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="amount", type="decimal", precision=10, scale=0)
-     */
-    private $amount;
 
     /**
      * @var string
@@ -44,11 +41,6 @@ class Transaction
      */
     private $refNo;
 
-    /**
-     * @var string
-     * @ORM\Column(name="created_by", type="string", length=255)
-     */
-    private $createdBy;
 
     /**
      * @var \DateTime
@@ -57,6 +49,20 @@ class Transaction
      */
     private $createdAt;
 
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="user")
+     * @ORM\JoinColumn(name="collector_id", referencedColumnName="id")
+     */
+    private $collector;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mobile", type="string", length=10)
+     */
+    private $mobile;
 
     public function __construct($amount = 0)
     {
@@ -89,29 +95,7 @@ class Transaction
     {
         $this->account = $account;
     }
-    /**
-     * Set amount
-     *
-     * @param string $amount
-     *
-     * @return Transaction
-     */
-    public function setAmount($amount)
-    {
-        $this->amount = $amount;
 
-        return $this;
-    }
-
-    /**
-     * Get amount
-     *
-     * @return string
-     */
-    public function getAmount()
-    {
-        return $this->amount;
-    }
 
     /**
      * Set refNo
@@ -166,26 +150,49 @@ class Transaction
     }
 
     /**
-     * Set createdBy
+     * Set collector
      *
-     * @param string $createdBy
+     * @param \AppBundle\Entity\user $collector
      *
-     * @return Transaction
+     * @return Cheque
      */
-    public function setCreatedBy($createdBy)
+    public function setCollector(\AppBundle\Entity\user $collector = null)
     {
-        $this->createdBy = $createdBy;
+        $this->collector = $collector;
 
         return $this;
     }
 
     /**
-     * Get createdBy
+     * Get collector
+     *
+     * @return \AppBundle\Entity\user
+     */
+    public function getCollector()
+    {
+        return $this->collector;
+    }
+    /**
+     * Set mobile
+     *
+     * @param string $mobile
+     *
+     * @return Transaction
+     */
+    public function setMobile($mobile)
+    {
+        $this->mobile = $mobile;
+
+        return $this;
+    }
+
+    /**
+     * Get mobile
      *
      * @return string
      */
-    public function getCreatedBy()
+    public function getMobile()
     {
-        return $this->createdBy;
+        return $this->mobile;
     }
 }
