@@ -53,34 +53,48 @@ class Account
         $this->transactions = new ArrayCollection();
         $this->balance=0.00;
     }
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+
 
     public function __toString(){
         return (string) $this->getAccountNo();
     }
 
+
     /**
-     * @return ArrayCollection
+     * deposit to account
+     *
+     * @param double $depositAmount
+     *
+     * @return Account
      */
-    public function getTransactions()
+    public function deposit($depositAmount)
     {
-        return $this->transactions;
+        $this->balance += $depositAmount;
+
+        return $this;
+    }
+    /**
+     * withdraw from account
+     *
+     * @param double $withdrawAmount
+     *
+     * @return Account
+     */
+    public function withdraw($withdrawAmount)
+    {
+        $this->balance -= $withdrawAmount;
+
+        return $this;
     }
 
     /**
-     * @param ArrayCollection $transactions
+     * Get id
+     *
+     * @return integer
      */
-    public function setTransactions($transactions)
+    public function getId()
     {
-        $this->transactions = $transactions;
+        return $this->id;
     }
 
     /**
@@ -110,7 +124,7 @@ class Account
     /**
      * Set balance
      *
-     * @param double $balance
+     * @param string $balance
      *
      * @return Account
      */
@@ -124,7 +138,7 @@ class Account
     /**
      * Get balance
      *
-     * @return double
+     * @return string
      */
     public function getBalance()
     {
@@ -154,31 +168,38 @@ class Account
     {
         return $this->accountHolderName;
     }
+
     /**
-     * deposit to account
+     * Add transaction
      *
-     * @param double $depositAmount
+     * @param \AppBundle\Entity\Transaction $transaction
      *
      * @return Account
      */
-    public function deposit($depositAmount)
+    public function addTransaction(\AppBundle\Entity\Transaction $transaction)
     {
-        $this->balance += $depositAmount;
+        $this->transactions[] = $transaction;
 
         return $this;
     }
-    /**
-     * withdraw from account
-     *
-     * @param double $withdrawAmount
-     *
-     * @return Account
-     */
-    public function withdraw($withdrawAmount)
-    {
-        $this->balance -= $withdrawAmount;
 
-        return $this;
+    /**
+     * Remove transaction
+     *
+     * @param \AppBundle\Entity\Transaction $transaction
+     */
+    public function removeTransaction(\AppBundle\Entity\Transaction $transaction)
+    {
+        $this->transactions->removeElement($transaction);
+    }
+
+    /**
+     * Get transactions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTransactions()
+    {
+        return $this->transactions;
     }
 }
-

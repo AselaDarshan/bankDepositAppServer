@@ -16,7 +16,7 @@ class Cheque
 
     /**
      * Many Features have One Product.
-     * @ORM\ManyToOne(targetEntity="ChequeTransaction", inversedBy="cheques")
+     * @ORM\ManyToOne(targetEntity="ChequeTransaction", inversedBy="cheques", cascade={"persist"})
      * @ORM\JoinColumn(name="transaction_id", referencedColumnName="id")
      */
     private $chequeTransaction;
@@ -54,18 +54,41 @@ class Cheque
     }
 
 
+
+
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * Set chequeNo
+     *
+     * @param string $chequeNo
+     *
+     * @return Cheque
+     */
+    public function setChequeNo($chequeNo)
+    {
+        $this->chequeNo = $chequeNo;
 
+        return $this;
+    }
 
+    /**
+     * Get chequeNo
+     *
+     * @return string
+     */
+    public function getChequeNo()
+    {
+        return $this->chequeNo;
+    }
 
     /**
      * Set amount
@@ -90,45 +113,28 @@ class Cheque
     {
         return $this->amount;
     }
+
     /**
-     * Set chequeNo
+     * Set chequeTransaction
      *
-     * @param string $chequeNo
+     * @param \AppBundle\Entity\ChequeTransaction $chequeTransaction
      *
-     * @return Transaction
+     * @return Cheque
      */
-    public function setChequeNo($chequeNo)
+    public function setChequeTransaction(\AppBundle\Entity\ChequeTransaction $chequeTransaction = null)
     {
-        $this->chequeNo = $chequeNo;
+        $this->chequeTransaction = $chequeTransaction;
 
         return $this;
     }
 
     /**
-     * Get chequeNo
+     * Get chequeTransaction
      *
-     * @return string
-     */
-    public function getChequeNo()
-    {
-
-
-        return $this->chequeNo;
-    }
-    /**
-     * @return mixed
+     * @return \AppBundle\Entity\ChequeTransaction
      */
     public function getChequeTransaction()
     {
         return $this->chequeTransaction;
     }
-
-    /**
-     * @param mixed $chequeTrasaction
-     */
-    public function setCheque($chequeTrasaction)
-    {
-        $this->cheque = $chequeTrasaction;
-    }
-
-    }
+}

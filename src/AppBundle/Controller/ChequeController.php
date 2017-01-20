@@ -65,12 +65,13 @@ class ChequeController extends Controller
                         foreach($data['checks'] as $eachCheque){
                             $cheque = new Cheque($eachCheque['amount']);
                             $cheque->setChequeNo($eachCheque['check_no']);
+                            $cheque->setChequeTransaction($chequeTransaction);
                             $chequeTransaction->addCheque($cheque);
+                            $em->persist($cheque);
                         }
 
                         $em->persist($account);
                         // tells Doctrine you want to (eventually) save the Product (no queries yet)
-                        $em->persist($cheque);
                         $em->persist($chequeTransaction);
 
                         // actually executes the queries (i.e. the INSERT query)
