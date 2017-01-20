@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"transaction"="Transaction","chequeTransaction" = "ChequeTransaction","cashTransaction" = "CashTransaction"})
+
  */
 class Transaction
 {
@@ -64,10 +65,10 @@ class Transaction
      */
     private $mobile;
 
-    public function __construct($amount = 0)
+    public function __construct()
     {
-        $this->amount = $amount;
-        $this->refNo = (new \DateTime())->getTimestamp()%100000000;
+
+
         $this->createdAt = new \DateTime();
 
     }

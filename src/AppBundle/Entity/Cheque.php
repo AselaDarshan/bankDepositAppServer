@@ -41,7 +41,7 @@ class Cheque
     /**
      * @var string
      *
-     * @ORM\Column(name="Amount", type="decimal")
+     * @ORM\Column(name="Amount", type="decimal" , precision=19, scale=2)
      */
     private $amount;
 

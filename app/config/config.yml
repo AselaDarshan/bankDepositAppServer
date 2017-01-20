@@ -102,7 +102,7 @@ easy_admin:
                     - balance
                     - transactions
         Transaction:
-            class: AppBundle\Entity\Transaction
+            class: AppBundle\Entity\CashTransaction
             label: 'Cash Deposits'
             list:
                 title: 'Cash Deposits'
@@ -110,21 +110,28 @@ easy_admin:
                     - id
                     - amount
                     - account
-                    - createdBy
                     - createdAt
                     - refNo
-        Cheque:
-            class: AppBundle\Entity\Cheque
+        ChequeTransaction:
+            class: AppBundle\Entity\ChequeTransaction
             label: 'Cheque Deposits'
             list:
                 title: 'Cheque Deposits'
                 fields:
                     - id
-                    - amount
                     - account
                     - collector
                     - createdAt
                     - refNo
-
+        Cheque:
+            class: AppBundle\Entity\Cheque
+            label: 'Cheques'
+            list:
+                title: 'Cheques'
+                fields:
+                    - id
+                    - chequeTransaction
+                    - chequeNo
+                    - amount
 
 

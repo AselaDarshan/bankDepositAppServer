@@ -13,12 +13,21 @@ use Doctrine\ORM\Mapping as ORM;
 class CashTransaction extends Transaction
 {
 
+
     /**
      * @var string
      *
-     * @ORM\Column(name="Amount", type="decimal")
+     * @ORM\Column(name="Amount", type="decimal" , precision=19, scale=2)
      */
     private $amount;
+
+    public function __construct($amount = 0)
+    {
+
+        parent::__construct();
+        $this->amount = $amount;
+
+    }
 
     /**
      * Set amount
@@ -44,4 +53,3 @@ class CashTransaction extends Transaction
         return $this->amount;
     }
 }
-

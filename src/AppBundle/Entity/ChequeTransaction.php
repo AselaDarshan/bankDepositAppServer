@@ -12,22 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ChequeTransaction extends Transaction
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
+
+
+    public function __toString(){
+        return (string) $this->getId();
     }
+
+
 
 }

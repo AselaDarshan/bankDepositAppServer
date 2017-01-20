@@ -42,7 +42,7 @@ class ChequeController extends Controller
             $accountNo = $data['check_initial']['account_no'];
             //$amount = $data[0]['amount'];
             $mobile = $data['check_initial']['mobile'];
-
+            $refNo = $data['check_initial']['ref_no'];
             $em = $this->getDoctrine()->getManager();
             $user = $em->getRepository('AppBundle:User')->findOneBy(["username" => $username]);
             if (!is_null($user)) {
@@ -61,7 +61,7 @@ class ChequeController extends Controller
                         $chequeTransaction->setAccount($account);
                         $chequeTransaction->setCollector($user);
                         $chequeTransaction->setMobile($mobile);
-
+                        $chequeTransaction->setRefNo($refNo);
                         foreach($data['checks'] as $eachCheque){
                             $cheque = new Cheque($eachCheque['amount']);
                             $cheque->setChequeNo($eachCheque['check_no']);

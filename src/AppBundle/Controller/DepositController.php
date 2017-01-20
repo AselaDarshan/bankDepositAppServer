@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Account;
 
 use AppBundle\Entity\Transaction;
+use AppBundle\Entity\CashTransaction;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -38,7 +39,8 @@ class DepositController extends Controller
         $accountNo = $data['account_no'];
         $amount = $data['amount'];
         $mobile=$data['mobile'];
-
+        $refNo = $data['ref_no'];
+        $logger->debug("amoung : " +$amount);
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')->findOneBy(["username"=>$username]);
         if(!is_null($user)) {
@@ -57,13 +59,19 @@ class DepositController extends Controller
 
                 //withdraw from operator's account
                 $withdraw = new CashTransaction(($amount*-1));
+
                 $withdraw->setAccount($operatorAccount);
                 $operatorAccount->withdraw($amount);
                 $withdraw->setCollector($user);
+                $withdraw->setRefNo($operatorAccount.$refNo);
+
+                $withdraw->setMobile($user->getMobile());
                 //deposit amount to user's account
                 $deposit = new CashTransaction($amount);
                 $deposit->setAccount($account);
                 $deposit->setCollector($user);
+                $deposit->setRefNo($refNo);
+                $deposit->setMobile($mobile);
                 $account->deposit($amount);
 
                 $em->persist($account);
