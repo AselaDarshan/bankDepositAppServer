@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * Cheque
  *
@@ -37,6 +38,18 @@ class Cheque
      * @ORM\Column(name="chequeNo", type="string", length=255)
      */
     private $chequeNo;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="chequeFront", type="string", length=255)
+     */
+    private $chequeFront;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="chequeBack", type="string", length=255)
+     */
+    private $chequeBack;
 
     /**
      * @var string
@@ -139,5 +152,53 @@ class Cheque
     public function getChequeTransaction()
     {
         return $this->chequeTransaction;
+    }
+
+    /**
+     * Set chequeFront
+     *
+     * @param string $chequeFront
+     *
+     * @return Cheque
+     */
+    public function setChequeFront($chequeFront)
+    {
+        $this->chequeFront = $chequeFront;
+
+        return $this;
+    }
+
+    /**
+     * Get chequeFront
+     *
+     * @return string
+     */
+    public function getChequeFront()
+    {
+        return $this->chequeFront;
+    }
+
+    /**
+     * Set chequeBack
+     *
+     * @param string $chequeBack
+     *
+     * @return Cheque
+     */
+    public function setChequeBack($chequeBack)
+    {
+        $this->chequeBack = $chequeBack;
+
+        return $this;
+    }
+
+    /**
+     * Get chequeBack
+     *
+     * @return string
+     */
+    public function getChequeBack()
+    {
+        return $this->chequeBack;
     }
 }

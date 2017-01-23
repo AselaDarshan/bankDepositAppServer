@@ -133,5 +133,12 @@ easy_admin:
                     - chequeTransaction
                     - chequeNo
                     - amount
+# vich uploader config
+vich_uploader:
+    db_driver: orm 
 
 
+    mappings:
+        Image:
+            uri_prefix:         /cheque
+            upload_destination: '%kernel.root_dir%/../web/cheque'
