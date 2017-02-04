@@ -28,7 +28,7 @@ class Transaction
     // ...
     /**
      * @var Account
-     * @ORM\ManyToOne(targetEntity="account", inversedBy="transactions")
+     * @ORM\ManyToOne(targetEntity="Account", inversedBy="Transactions")
      * @ORM\JoinColumn(name="account_id", referencedColumnName="id")
      */
     private $account;
@@ -52,7 +52,7 @@ class Transaction
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="user")
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="collector_id", referencedColumnName="id")
      */
     private $collector;

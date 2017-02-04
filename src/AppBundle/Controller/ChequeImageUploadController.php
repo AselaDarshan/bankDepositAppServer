@@ -38,33 +38,34 @@ class ChequeImageUploadController extends Controller
         $em = $this->getDoctrine()->getManager();
         $chequeTransaction = $em->getRepository('AppBundle:Transaction')->findOneBy(["refNo"=>$refNo]);
         $logger->debug($chequeTransaction);
+        $logger->debug("ffffffffffffffffff".$refNo);
         $cheque = $em->getRepository('AppBundle:Cheque')->findOneBy(["chequeTransaction"=>$chequeTransaction,"chequeNo" => $chequeNo]);
         $logger->debug($cheque->getChequeNo());
         $data = json_decode($request, true);
 
         //$image = base64_to_jpeg( $front, __DIR__.'/../../../web/cheque'.$chequeTransaction.'_'.$cheque.'_'.'front'.'.jpg' );
         //$logger->debug($data);
-        $filefront = __DIR__.'/../../../web/cheque/'.$chequeTransaction.'_'.$cheque->getChequeNo().'_'.'front'.'.jpg';
-        $fileback = __DIR__.'/../../../web/cheque/'.$chequeTransaction.'_'.$cheque->getChequeNo().'_'.'back'.'.jpg';
+        $filefront = $this->get('kernel')->getRootDir().'/../web/cheque/'.$chequeTransaction.'_'.$cheque->getChequeNo().'_'.'front'.'.jpg';
+        $fileback = $this->get('kernel')->getRootDir().'/../web/cheque/'.$chequeTransaction.'_'.$cheque->getChequeNo().'_'.'back'.'.jpg';
 
         $logger->debug($filefront);
 
         $cheque->setChequeFront($filefront);
         $cheque->setChequeBack($fileback);
 
-        //$em->persist($cheque);
-        //$em->flush();
+        $em->persist($cheque);
+        $em->flush();
 
 
         $imagefront =base64_decode( $front);
         $imageback =base64_decode( $back);
 
-        //file_put_contents($filefront, $imagefront);
-        //file_put_contents($fileback, $imageback);
-       /* $image = new Image();
-        $image->setImageFile($imagefront);
-        $em->persist($image);
-        $em->flush();*/
+        file_put_contents($filefront, $imagefront);
+        file_put_contents($fileback, $imageback);
+//        $image = new Image();
+//        $image->setImageFile($imagefront);
+//        $em->persist($image);
+//        $em->flush();
         return new JsonResponse("status:'404',massage:'success");
     }
 

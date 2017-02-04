@@ -125,6 +125,8 @@ easy_admin:
                     - collector
                     - createdAt
                     - refNo
+                    - nic
+                    - narr
         Cheque:
             class: AppBundle\Entity\Cheque
             label: 'Cheques'
