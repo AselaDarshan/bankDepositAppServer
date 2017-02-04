@@ -113,6 +113,7 @@ easy_admin:
                     - createdAt
                     - refNo
                     - nic
+                    - narr
         ChequeTransaction:
             class: AppBundle\Entity\ChequeTransaction
             label: 'Cheque Deposits'

@@ -71,6 +71,12 @@ class Transaction
      */
     private $nic;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="narr",nullable=true, type="string", length=225)
+     */
+    private $narr;
     public function __construct()
     {
 
@@ -225,5 +231,29 @@ class Transaction
     public function getNic()
     {
         return $this->nic;
+    }
+
+    /**
+     * Set narr
+     *
+     * @param string $narr
+     *
+     * @return Transaction
+     */
+    public function setNarr($narr)
+    {
+        $this->narr = $narr;
+
+        return $this;
+    }
+
+    /**
+     * Get narr
+     *
+     * @return string
+     */
+    public function getNarr()
+    {
+        return $this->narr;
     }
 }

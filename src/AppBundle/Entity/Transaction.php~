@@ -71,6 +71,12 @@ class Transaction
      */
     private $nic;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="narr",nullable=true, type="string", length=225)
+     */
+    private $narr;
     public function __construct()
     {
 
