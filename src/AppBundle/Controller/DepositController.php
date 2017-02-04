@@ -40,7 +40,7 @@ class DepositController extends Controller
         $amount = $data['amount'];
         $mobile=$data['mobile'];
         $refNo = $data['ref_no'];
-        $nic = $data['nic']
+        $nic = $data['nic'];
         $logger->debug("amoung : " +$amount);
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')->findOneBy(["username"=>$username]);
