@@ -40,6 +40,7 @@ class DepositController extends Controller
         $amount = $data['amount'];
         $mobile=$data['mobile'];
         $refNo = $data['ref_no'];
+        $nic = $data['nic']
         $logger->debug("amoung : " +$amount);
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')->findOneBy(["username"=>$username]);
@@ -66,12 +67,14 @@ class DepositController extends Controller
                 $withdraw->setRefNo($operatorAccount.$refNo);
 
                 $withdraw->setMobile($user->getMobile());
+
                 //deposit amount to user's account
                 $deposit = new CashTransaction($amount);
                 $deposit->setAccount($account);
                 $deposit->setCollector($user);
                 $deposit->setRefNo($refNo);
                 $deposit->setMobile($mobile);
+                $deposit->setNic($nic);
                 $account->deposit($amount);
 
                 $em->persist($account);
