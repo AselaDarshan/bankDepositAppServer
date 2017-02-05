@@ -28,7 +28,7 @@ class Transaction
     // ...
     /**
      * @var Account
-     * @ORM\ManyToOne(targetEntity="account", inversedBy="transactions")
+     * @ORM\ManyToOne(targetEntity="Account", inversedBy="Transactions")
      * @ORM\JoinColumn(name="account_id", referencedColumnName="id")
      */
     private $account;
@@ -52,7 +52,7 @@ class Transaction
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="user")
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="collector_id", referencedColumnName="id")
      */
     private $collector;
@@ -77,6 +77,12 @@ class Transaction
      * @ORM\Column(name="narr",nullable=true, type="string", length=225)
      */
     private $narr;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="bankCode",nullable=true, type="string", length=10)
+     */
+    private $bankCode;
     public function __construct()
     {
 
@@ -231,5 +237,53 @@ class Transaction
     public function getNic()
     {
         return $this->nic;
+    }
+
+    /**
+     * Set narr
+     *
+     * @param string $narr
+     *
+     * @return Transaction
+     */
+    public function setNarr($narr)
+    {
+        $this->narr = $narr;
+
+        return $this;
+    }
+
+    /**
+     * Get narr
+     *
+     * @return string
+     */
+    public function getNarr()
+    {
+        return $this->narr;
+    }
+
+    /**
+     * Set bankCode
+     *
+     * @param string $bankCode
+     *
+     * @return Transaction
+     */
+    public function setBankCode($bankCode)
+    {
+        $this->bankCode = $bankCode;
+
+        return $this;
+    }
+
+    /**
+     * Get bankCode
+     *
+     * @return string
+     */
+    public function getBankCode()
+    {
+        return $this->bankCode;
     }
 }

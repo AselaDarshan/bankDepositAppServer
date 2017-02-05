@@ -30,12 +30,17 @@ class ChequeController extends Controller
         $username = $request->request->get('user');
         $requestData =$request->request->get('data');
         $data = json_decode($requestData, true);
-        $accountNo = $data['check_initial']['account_no'];
-        $nic = $data['check_initial']['nic'];
-        $narr = $data['check_initial']['narr'];
+        $accountNo = $data['account_no'];
+        $bankCode = $data['bank_code'];
+
+        $mobile = $data['mobile'];
+        $refNo = $data['ref_no'];
+        $nic = $data['nic'];
+        $numOfCheques= $data['num_cheques'];
+        $amount = $data['amount'];
+        $narr = $data['narr'];
         //$amount = $data[0]['amount'];
-        $mobile = $data['check_initial']['mobile'];
-        $refNo = $data['check_initial']['ref_no'];
+
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')->findOneBy(["username" => $username]);
         if (!is_null($user)) {
@@ -50,20 +55,15 @@ class ChequeController extends Controller
                 }
                 $chequeTransaction = new ChequeTransaction();
                 $chequeTransaction->setAccount($account);
+
                 $chequeTransaction->setCollector($user);
                 $chequeTransaction->setMobile($mobile);
                 $chequeTransaction->setRefNo($refNo);
                 $chequeTransaction->setNic($nic);
+                $chequeTransaction->setCheques($numOfCheques);
+                $chequeTransaction->setAmount($amount);
                 $chequeTransaction->setNarr($narr);
-                foreach($data['checks'] as $eachCheque){
-                    $cheque = new Cheque($eachCheque['amount']);
-                    $cheque->setChequeNo($eachCheque['check_no']);
-                    $cheque->setChequeFront("front");
-                    $cheque->setChequeBack("back");
-                   // $logger->debug("cheque transaction successful".$eachCheque['check_no']);
-                    $cheque->setChequeTransaction($chequeTransaction);
-                    $em->persist($cheque);
-                }
+                $chequeTransaction->setBankCode($bankCode);
                 $em->persist($account);
                 // tells Doctrine you want to (eventually) save the Product (no queries yet)
                 $em->persist($chequeTransaction);

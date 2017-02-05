@@ -37,8 +37,11 @@ class DepositController extends Controller
 
 
         $accountNo = $data['account_no'];
+        $bankCode = $data['bank_code'];
+
         $amount = $data['amount'];
         $mobile=$data['mobile'];
+        $logger->debug($mobile."gggggggggggggggggggggg");
         $refNo = $data['ref_no'];
         $nic = $data['nic'];
         $narr = $data['narr'];
@@ -68,6 +71,7 @@ class DepositController extends Controller
                 $withdraw->setRefNo($operatorAccount.$refNo);
 
                 $withdraw->setMobile($user->getMobile());
+                $withdraw->setBankCode($bankCode);
 
                 //deposit amount to user's account
                 $deposit = new CashTransaction($amount);
@@ -77,7 +81,9 @@ class DepositController extends Controller
                 $deposit->setMobile($mobile);
                 $deposit->setNic($nic);
                 $deposit->setNarr($narr);
+                $deposit->setBankCode($bankCode);
                 $account->deposit($amount);
+
 
                 $em->persist($account);
                 // tells Doctrine you want to (eventually) save the Product (no queries yet)

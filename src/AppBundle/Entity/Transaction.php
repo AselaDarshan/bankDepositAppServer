@@ -77,6 +77,12 @@ class Transaction
      * @ORM\Column(name="narr",nullable=true, type="string", length=225)
      */
     private $narr;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="bankCode",nullable=true, type="string", length=10)
+     */
+    private $bankCode;
     public function __construct()
     {
 
@@ -255,5 +261,29 @@ class Transaction
     public function getNarr()
     {
         return $this->narr;
+    }
+
+    /**
+     * Set bankCode
+     *
+     * @param string $bankCode
+     *
+     * @return Transaction
+     */
+    public function setBankCode($bankCode)
+    {
+        $this->bankCode = $bankCode;
+
+        return $this;
+    }
+
+    /**
+     * Get bankCode
+     *
+     * @return string
+     */
+    public function getBankCode()
+    {
+        return $this->bankCode;
     }
 }
