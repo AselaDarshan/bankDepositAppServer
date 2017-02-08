@@ -112,6 +112,9 @@ easy_admin:
                     - account
                     - createdAt
                     - refNo
+                    - nic
+                    - narr
+
         ChequeTransaction:
             class: AppBundle\Entity\ChequeTransaction
             label: 'Cheque Deposits'
@@ -123,6 +126,11 @@ easy_admin:
                     - collector
                     - createdAt
                     - refNo
+                    - nic
+                    - cheques
+                    - amount
+                    - narr
+                    - bankCode
         Cheque:
             class: AppBundle\Entity\Cheque
             label: 'Cheques'

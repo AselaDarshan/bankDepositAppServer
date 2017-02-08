@@ -85,28 +85,4 @@ class ChequeTransaction extends Transaction
     {
         return $this->cheques;
     }
-
-    /**
-     * Set bankCode
-     *
-     * @param string $bankCode
-     *
-     * @return ChequeTransaction
-     */
-    public function setBankCode($bankCode)
-    {
-        $this->bankCode = $bankCode;
-
-        return $this;
-    }
-
-    /**
-     * Get bankCode
-     *
-     * @return string
-     */
-    public function getBankCode()
-    {
-        return $this->bankCode;
-    }
 }

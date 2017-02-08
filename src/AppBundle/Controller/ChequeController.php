@@ -5,55 +5,47 @@
  * Date: 9/15/16
  * Time: 10:53 PM
  */
-
 namespace AppBundle\Controller;
-
 use AppBundle\Entity\Account;
-
+use AppBundle\Entity\Cheque;
+use AppBundle\Entity\ChequeTransaction;
 use AppBundle\Entity\Transaction;
-use AppBundle\Entity\CashTransaction;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
-class DepositController extends Controller
+class ChequeController extends Controller
 {
     /**
-     * @Route("/deposit/cash", name="cash_deposit")
+     * @Route("/deposit/cheque", name="cheque_deposit")
      */
-    public function cashDepositAction()
+    public function chequeDepositAction()
     {
         $logger = $this->get('logger');
-
+        $responses = Array();
         $request =  $this->container->get('request_stack')->getCurrentRequest();
+        $logger->debug("In ChequeController");
         $logger->debug($request);
-
         $username = $request->request->get('user');
         $requestData =$request->request->get('data');
-
         $data = json_decode($requestData, true);
-
-
         $accountNo = $data['account_no'];
-        //$bankCode = $data['bank_code'];
+        $bankCode = $data['bank_code'];
 
-        $amount = $data['amount'];
-        $mobile=$data['mobile'];
-        $logger->debug($mobile."gggggggggggggggggggggg");
+        $mobile = $data['mobile'];
         $refNo = $data['ref_no'];
         $nic = $data['nic'];
+        $numOfCheques= $data['num_cheques'];
+        $amount = $data['amount'];
         $narr = $data['narr'];
-        $logger->debug("amoung : " .$amount);
+        //$amount = $data[0]['amount'];
+
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('AppBundle:User')->findOneBy(["username"=>$username]);
-        if(!is_null($user)) {
-
+        $user = $em->getRepository('AppBundle:User')->findOneBy(["username" => $username]);
+        if (!is_null($user)) {
             $operatorAccount = $user->getAccount();
-
             $account = $em->getRepository('AppBundle:Account')->findOneBy(["accountNo" => $accountNo]);
-
             //start atomic transaction
             $em->getConnection()->beginTransaction(); // suspend auto-commit
             try {
@@ -61,56 +53,38 @@ class DepositController extends Controller
                     $account = new Account();
                     $account->setAccountNo($accountNo);
                 }
+                $chequeTransaction = new ChequeTransaction();
+                $chequeTransaction->setAccount($account);
 
-                //withdraw from operator's account
-                $withdraw = new CashTransaction(($amount*-1));
-
-                $withdraw->setAccount($operatorAccount);
-                $operatorAccount->withdraw($amount);
-                $withdraw->setCollector($user);
-                $withdraw->setRefNo($operatorAccount.$refNo);
-
-                $withdraw->setMobile($user->getMobile());
-                //$withdraw->setBankCode($bankCode);
-
-                //deposit amount to user's account
-                $deposit = new CashTransaction($amount);
-                $deposit->setAccount($account);
-                $deposit->setCollector($user);
-                $deposit->setRefNo($refNo);
-                $deposit->setMobile($mobile);
-                $deposit->setNic($nic);
-                $deposit->setNarr($narr);
-                //$deposit->setBankCode($bankCode);
-                $account->deposit($amount);
-
-
+                $chequeTransaction->setCollector($user);
+                $chequeTransaction->setMobile($mobile);
+                $chequeTransaction->setRefNo($refNo);
+                $chequeTransaction->setNic($nic);
+                $chequeTransaction->setCheques($numOfCheques);
+                $chequeTransaction->setAmount($amount);
+                $chequeTransaction->setNarr($narr);
+                $chequeTransaction->setBankCode($bankCode);
                 $em->persist($account);
                 // tells Doctrine you want to (eventually) save the Product (no queries yet)
-                $em->persist($deposit);
-                $em->persist($withdraw);
-
+                $em->persist($chequeTransaction);
                 // actually executes the queries (i.e. the INSERT query)
                 $em->flush();
                 $em->getConnection()->commit();
+                $logger->debug("cheque transaction successful");
             } catch (Exception $e) {
                 //if failed rollback
+                $logger->debug("Exception when inserting cheque transaction");
                 $em->getConnection()->rollBack();
                 throw $e;
             }
-
-
             $response = array(
                 'success' => true,
-                'ref_no' => $deposit->getRefNo()
             );
-
             return new JsonResponse($response);
         }
         $response = array(
             'success' => false,
         );
-
         return new JsonResponse($response);
     }
 }
