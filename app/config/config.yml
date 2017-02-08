@@ -73,7 +73,7 @@ fos_user:
     user_class: AppBundle\Entity\User
     from_email :
         address : "supunmadushanka12219@gmail.com"
-        sender_name : supun
+        sender_name :  supun
 easy_admin:
     site_name: 'Amãna Bank'
     design:
