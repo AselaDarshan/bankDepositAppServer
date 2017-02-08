@@ -25,6 +25,12 @@ class ChequeTransaction extends Transaction
      * @ORM\Column(name="Cheques", type="integer" )
      */
     private $cheques;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="bankCode",nullable=true, type="string", length=10)
+     */
+    private $bankCode;
     public function __toString(){
         return (string) $this->getId();
     }
@@ -78,5 +84,29 @@ class ChequeTransaction extends Transaction
     public function getCheques()
     {
         return $this->cheques;
+    }
+
+    /**
+     * Set bankCode
+     *
+     * @param string $bankCode
+     *
+     * @return ChequeTransaction
+     */
+    public function setBankCode($bankCode)
+    {
+        $this->bankCode = $bankCode;
+
+        return $this;
+    }
+
+    /**
+     * Get bankCode
+     *
+     * @return string
+     */
+    public function getBankCode()
+    {
+        return $this->bankCode;
     }
 }

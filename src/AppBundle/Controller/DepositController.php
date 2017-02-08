@@ -37,7 +37,7 @@ class DepositController extends Controller
 
 
         $accountNo = $data['account_no'];
-        $bankCode = $data['bank_code'];
+        //$bankCode = $data['bank_code'];
 
         $amount = $data['amount'];
         $mobile=$data['mobile'];
@@ -45,7 +45,7 @@ class DepositController extends Controller
         $refNo = $data['ref_no'];
         $nic = $data['nic'];
         $narr = $data['narr'];
-        $logger->debug("amoung : " +$amount);
+        $logger->debug("amoung : " .$amount);
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')->findOneBy(["username"=>$username]);
         if(!is_null($user)) {
@@ -71,7 +71,7 @@ class DepositController extends Controller
                 $withdraw->setRefNo($operatorAccount.$refNo);
 
                 $withdraw->setMobile($user->getMobile());
-                $withdraw->setBankCode($bankCode);
+                //$withdraw->setBankCode($bankCode);
 
                 //deposit amount to user's account
                 $deposit = new CashTransaction($amount);
@@ -81,7 +81,7 @@ class DepositController extends Controller
                 $deposit->setMobile($mobile);
                 $deposit->setNic($nic);
                 $deposit->setNarr($narr);
-                $deposit->setBankCode($bankCode);
+                //$deposit->setBankCode($bankCode);
                 $account->deposit($amount);
 
 
